@@ -1,0 +1,224 @@
+:root {
+  color-scheme: light;
+  --app-bg: #f7f7f9;
+  --app-text: #101114;
+  --glass-bg: linear-gradient(rgba(224, 224, 224, 0.2), rgba(224, 224, 224, 0.2));
+  --bnav-color: #666;
+  --theme-toggle-bg: rgba(0, 0, 0, 0.05);
+  --theme-toggle-border: rgba(0, 0, 0, 0.1);
+  --theme-toggle-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --app-icons-color: #0d6efd;
+  --placeholder-color: #c4c7c7;
+  --admin-tab-bg: #fffffe;
+}
+
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #0f131a;
+  --app-text: #e6e7ea;
+  --glass-bg: linear-gradient(rgba(18, 22, 28, 0.72), rgba(18, 22, 28, 0.72));
+  --bnav-color: #9aa0a6;
+  --theme-toggle-bg: rgba(255, 255, 255, 0.08);
+  --theme-toggle-border: rgba(255, 255, 255, 0.18);
+  --theme-toggle-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  --placeholder-color: #c4c7c7;
+  --admin-tab-bg: #212529;
+}
+
+body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+
+.bnav {
+  color: var(--bnav-color);
+}
+
+.glass {
+  background: var(--glass-bg);
+}
+
+.theme-toggle {
+  align-items: center;
+  background: var(--theme-toggle-bg);
+  border: 1px solid var(--theme-toggle-border);
+  border-radius: 999px;
+  box-shadow: var(--theme-toggle-shadow);
+  color: inherit;
+  display: inline-flex;
+  gap: 0.35rem;
+  line-height: 1;
+  padding: 0.2rem 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.theme-toggle i {
+  font-size: 1.1rem;
+}
+
+.bi {
+  color: var(--app-icons-color) !important;
+}
+
+.nav-user-chip {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  line-height: 1;
+  padding: 0.25rem 0.75rem;
+}
+
+.nav-avatar {
+  border-radius: 999px;
+  height: 26px;
+  object-fit: cover;
+  width: 26px;
+}
+
+.nav-avatar-placeholder {
+  align-items: center;
+  display: inline-flex;
+  font-size: 1.4rem;
+  height: 26px;
+  justify-content: center;
+  line-height: 1;
+  width: 26px;
+}
+
+.brand-logo {
+  height: 44px;
+  margin-right: 0.4rem;
+  object-fit: contain;
+  width: 44px;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+}
+
+.navbar .nav-link.active {
+  background-color: rgba(0, 0, 0, 0.14);
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.dropdown-menu .dropdown-item.active {
+  background-color: rgba(0, 0, 0, 0.14) !important;
+  color: inherit;
+  font-weight: 600;
+}
+
+[data-bs-theme="dark"] .navbar .nav-link:hover,
+[data-bs-theme="dark"] .navbar .nav-link:focus {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+[data-bs-theme="dark"] .navbar .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item:hover,
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item:focus {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+[data-bs-theme="dark"] .dropdown-menu .dropdown-item.active {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.lang-switcher {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
+.lang-toggle {
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  padding: 0.15rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lang-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.lang-toggle.active {
+  box-shadow: var(--theme-toggle-shadow);
+}
+
+.lang-flag {
+  border-radius: 4px;
+  display: block;
+  height: 16px;
+  width: 24px;
+}
+.profile-avatar {
+  border-radius: 16px;
+  height: 96px;
+  object-fit: cover;
+  width: 96px;
+}
+
+.profile-avatar-placeholder {
+  align-items: center;
+  display: inline-flex;
+  font-size: 4rem;
+  height: 96px;
+  justify-content: center;
+  line-height: 1;
+  width: 96px;
+}
+
+.settings-switches .form-check {
+  padding-left: 3.75rem;
+}
+
+.settings-switches .form-check-input {
+  height: 1.6rem;
+  margin-left: -3.75rem;
+  margin-top: 0.15rem;
+  background-size: 1.35rem 1.35rem;
+  border-radius: 2rem;
+  width: 3.2rem;
+}
+
+.settings-switches .form-check-input:focus {
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+.settings-switches .form-check-input:checked {
+  background-position: right center;
+}
+
+#myTab .nav-link.active {
+  background-color: var(--admin-tab-bg);
+  border-color: var(--bs-border-color) var(--bs-border-color) var(--admin-tab-bg);
+}
+
+#myTabContent {
+  background-color: var(--admin-tab-bg);
+}

@@ -1,0 +1,20 @@
+APP_NAME=#Application name
+APP_URL=#application URL
+APP_AT=#application at #appears on the bottom nav
+YEAR_START=#Year start the app
+#Mysql or sqlite
+DB_HOST=127.0.0.1
+DB_USER=root
+DB_PASS=
+DB_NAME=#Database name or path for sqlite
+DB_TYPE=#mysql or sqlite
+DB_CHAR=utf8
+DB_PORT=3306
+#Secret Key  
+APP_SECRET_KEY=#generated automatically
+#Sending mail data
+MAIL_HOST=#your mail host
+MAIL_USERNAME=#your mail username
+MAIL_PASSWORD=#your mail app password
+MAIL_PORT=587
+MAIL_FROM=#email shows as
