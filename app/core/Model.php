@@ -98,7 +98,7 @@ class Model
 
     public function delete($table, $id)
     {
-        return $this->db->delete("DELETE FROM $table WHERE id = ?", [$id]);
+        return $this->db->deleteById($table, $id);
     }
 
     public function settings(): ?object
