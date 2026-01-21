@@ -8,6 +8,9 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false"><i class="bi bi-gear"></i> <?= t('admin.settings') ?></button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tables-tab" data-bs-toggle="tab" data-bs-target="#tables-tab-pane" type="button" role="tab" aria-controls="tables-tab-pane" aria-selected="false"><i class="bi bi-table"></i> <?= t('admin.database_tables') ?></button>
+    </li>
 </ul>
 
 <div class="tab-content border border-top-0 rounded-bottom-3" id="myTabContent">
@@ -72,5 +75,7 @@
         <hr class="my-4">
         <?= view_partial('forms/admin-logo') ?>
     </div>
-
-</div>
+    <div class="tab-pane fade" id="tables-tab-pane" role="tabpanel" aria-labelledby="tables-tab" tabindex="0">
+        <div class="my-3">
+            <a href="/admin/table/create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> <?= t('admin.create_table') ?></a>
+        </div>

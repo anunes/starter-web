@@ -65,6 +65,8 @@ $router->group(['middleware' => 'auth'], function ($router) {
         $router->get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('edit');
         $router->post('/admin/update/{id}', [AdminController::class, 'update']);
         $router->get('/admin/delete/{id}', [AdminController::class, 'softdelete']);
+        $router->get('/admin/table/create', [AdminController::class, 'createTable'])->name('create-table');
+        $router->post('/admin/table/create', [AdminController::class, 'storeTable']);
     });
 });
 

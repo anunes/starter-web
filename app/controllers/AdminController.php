@@ -420,4 +420,123 @@ final class AdminController
 
         file_put_contents($path, $header . $entries . $data);
     }
+
+    public function createTable(): void
+    {
+        view('admin/create-table');
+    }
+
+    public function storeTable(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+            redirect('/admin');
+        }
+
+        if (!SE::checkCsrf()) {
+            SE::setflash(t('flash.invalid_csrf'), 'danger');
+            redirect('/admin/table/create');
+        }
+
+        $tableName = sanitize($_POST['table_name'] ?? '');
+        $columns = $_POST['columns'] ?? [];
+
+        // Validate table name
+        if (!preg_match('/^[a-z_][a-z0-9_]*$/', $tableName)) {
+            SE::setflash(t('admin.invalid_table_name'), 'danger');
+            redirect('/admin/table/create');
+        }
+
+        // Validate columns
+        if (empty($columns)) {
+            SE::setflash(t('admin.table_columns') . ' ' . t('flash.fill_all_fields'), 'danger');
+            redirect('/admin/table/create');
+        }
+
+        $model = new Model();
+
+        // Check if table already exists
+        try {
+            $tables = $model->getDb()->rows("SHOW TABLES");
+            foreach ($tables as $table) {
+                $tableKey = array_key_first((array)$table);
+                if ($table->{$tableKey} === $tableName) {
+                    SE::setflash(t('admin.table_already_exists'), 'warning');
+                    redirect('/admin/table/create');
+                }
+            }
+        } catch (\Exception $e) {
+            // For SQLite, use different query
+            try {
+                $tables = $model->getDb()->rows("SELECT name FROM sqlite_master WHERE type='table' AND name=?", [$tableName]);
+                if (!empty($tables)) {
+                    SE::setflash(t('admin.table_already_exists'), 'warning');
+                    redirect('/admin/table/create');
+                }
+            } catch (\Exception $e2) {
+                // Continue anyway
+            }
+        }
+
+        // Build CREATE TABLE statement
+        $columnDefs = [];
+        $colIndex = 0;
+        foreach ($columns as $column) {
+            if (!isset($column['name']) || !isset($column['type'])) {
+                continue;
+            }
+
+            $colName = sanitize($column['name']);
+            $colType = sanitize($column['type']);
+
+            // Validate column name
+            if (!preg_match('/^[a-z_][a-z0-9_]*$/', $colName)) {
+                SE::setflash(t('admin.invalid_column_name'), 'danger');
+                redirect('/admin/table/create');
+            }
+
+            $def = "`$colName` $colType";
+
+            // Handle nullable
+            if (!isset($column['nullable']) || $column['nullable'] !== 'on') {
+                $def .= " NOT NULL";
+            }
+
+            // Handle default value
+            if (isset($column['default']) && !empty($column['default'])) {
+                $defaultValue = sanitize($column['default']);
+                // Escape for SQL
+                if (in_array(strtoupper($colType), ['INT', 'BIGINT', 'DECIMAL(10,2)', 'BOOLEAN'])) {
+                    $def .= " DEFAULT $defaultValue";
+                } else {
+                    $def .= " DEFAULT '$defaultValue'";
+                }
+            } elseif (isset($column['nullable']) && $column['nullable'] === 'on') {
+                $def .= " DEFAULT NULL";
+            }
+
+            if ($colIndex === 0) {
+                $def .= " PRIMARY KEY AUTO_INCREMENT";
+            }
+
+            $columnDefs[] = $def;
+            $colIndex++;
+        }
+
+        if (empty($columnDefs)) {
+            SE::setflash(t('admin.table_columns') . ' ' . t('flash.fill_all_fields'), 'danger');
+            redirect('/admin/table/create');
+        }
+
+        $sqlColumns = implode(', ', $columnDefs);
+        $sql = "CREATE TABLE `$tableName` ($sqlColumns)";
+
+        try {
+            $model->getDb()->raw($sql);
+            SE::setflash(t('admin.table_created'), 'success');
+        } catch (\Exception $e) {
+            SE::setflash(t('admin.table_creation_failed') . ': ' . $e->getMessage(), 'danger');
+        }
+
+        redirect('/admin');
+    }
 }

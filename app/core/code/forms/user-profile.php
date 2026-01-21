@@ -1,6 +1,15 @@
 <?php
 
 $avatarFile = $user->avatar ?? null;
-$hasAvatar = !empty($avatarFile);
-$avatarSrc = $hasAvatar ? '/avatars/' . rawurlencode($avatarFile) : '';
-$avatarButtonLabel = $hasAvatar ? t('profile.change_avatar') : t('profile.add_avatar');
+$hasAvatar = false;
+$avatarSrc = '';
+
+// Add cache-busting query parameter for avatar
+if (!empty($avatarFile)) {
+    $avatarPath = APP_ROOT . '/storage/avatars/' . basename($avatarFile);
+    if (is_file($avatarPath)) {
+        $hasAvatar = true;
+        $cacheVersion = filemtime($avatarPath);
+        $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
+    }
+}

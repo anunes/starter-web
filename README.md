@@ -9,6 +9,8 @@ Starter Web is a lightweight PHP starter for small sites, with optional auth, ad
 - Branding uploads (logo + generated favicons).
 - User profiles with avatar upload.
 - Language switcher (EN/PT) and a light/dark theme toggle.
+- Custom database table creation directly from admin panel.
+- User account deactivation with admin reactivation.
 
 ## Requirements
 - PHP 7.4 or higher with the following extensions:
@@ -336,6 +338,29 @@ php -v  # Should be 7.4 or higher
 - Replace the brand logo by uploading a new logo in the admin settings.
 - Add translations in `app/lang/en.php` and `app/lang/pt.php`.
 
+## Admin Panel Features
+
+### User Management
+- **Active Users**: View and edit all active user accounts
+- **Inactive Users**: View and manage deactivated accounts
+- **User Deactivation**: When deleting a user, choose between:
+  - **Mark as Inactive**: User account remains in database but cannot login
+  - **Delete Permanently**: Completely remove user from database (irreversible)
+- **Auto-Reactivation**: Users promoted to admin role are automatically reactivated
+
+### Database Management
+- **Create Custom Tables**: Build database tables directly from the admin panel without SQL knowledge
+  - Supports 10+ column types (VARCHAR, TEXT, INT, DECIMAL, BOOLEAN, DATETIME, etc.)
+  - Dynamic column management (add/remove columns)
+  - Set nullable columns and default values
+  - Automatic primary key creation with auto-increment
+  - Validation prevents duplicate table names and invalid naming
+
+### Settings Management
+- **App Settings**: Configure icon colors and enable/disable features
+- **Branding**: Upload company logo (auto-optimized to WebP with generated favicons)
+- **Authentication**: Toggle user login/registration system on or off
+
 ## Adding new pages
 1. Create a view file under `app/views` (for simple pages, use `app/views/main`).
 2. Add a controller action that calls `view()`.
@@ -358,6 +383,52 @@ $router->get('/services', [MainController::class, 'services'])->name('services')
 4. Add a nav link in `app/views/layouts/navbar.view.php` and strings in `app/lang/en.php` and `app/lang/pt.php`.
 
 For pages that require login, place the route inside the `auth` group in `app/routes.php`.
+
+## User Account Management
+
+### Deactivating Users
+Admins can deactivate user accounts from the admin panel without deleting them:
+
+1. Go to **Administration** → **Active Users**
+2. Click the edit button next to the user
+3. Click the **Delete this user** button
+4. Choose your action:
+   - **Mark as Inactive**: User stays in database but cannot login (can be reactivated)
+   - **Delete Permanently**: User is completely removed from database (cannot be undone)
+
+### Inactive User Login Behavior
+When an inactive user tries to login, they receive the message:
+> "Your account has been deactivated. Please contact an administrator to reactivate your account."
+
+### Reactivating Users
+To reactivate an inactive user:
+
+1. Go to **Administration** → **Inactive Users**
+2. Click the edit button next to the user
+3. Check the **Reactivate user** checkbox
+4. Click **Update**
+
+Users promoted to admin role are automatically reactivated.
+
+## Creating Custom Database Tables
+
+Users can create custom database tables directly from the admin panel:
+
+1. Go to **Administration** → **Database Tables**
+2. Click **Create Custom Table**
+3. Enter a table name (lowercase, letters/numbers/underscores only)
+4. Add columns with the following options:
+   - **Column Name**: Required, validated naming
+   - **Type**: Choose from 10+ data types (VARCHAR, INT, DECIMAL, TEXT, DATETIME, etc.)
+   - **Nullable**: Optional - uncheck to make the column required
+   - **Default Value**: Optional - set a default value for the column
+5. Click **Create Table**
+
+The system automatically:
+- Creates a primary key with auto-increment
+- Validates all names and types
+- Prevents duplicate table creation
+- Shows error messages if creation fails
 
 ## Security
 - Keep `.env` out of version control.
@@ -498,3 +569,24 @@ ps aux | grep nginx | head -1
 - Verify `APP_SECRET_KEY` is set in `.env`
 - For production, ensure cookies work over HTTPS (set in session config)
 - Clear browser cookies and try again
+### Inactive Users Can Still Login
+If an inactive user can still login:
+- Verify the `active` column exists in the `users` table
+- Check that the user's `active` field is set to `0` in the database:
+  ```sql
+  SELECT id, email, active FROM users WHERE email = 'user@example.com';
+  ```
+- If the column doesn't exist, the auth system will allow all users to login regardless of status
+
+### Custom Table Creation Fails
+If you see "Failed to create table" error:
+- **Invalid table name**: Use only lowercase letters, numbers, and underscores. Table names cannot start with a number.
+- **Invalid column name**: Same naming rules apply to column names
+- **Table already exists**: The table name is already used in the database
+- **Database permissions**: Ensure the database user has `CREATE TABLE` privileges
+- **Column type syntax**: Some column types may need adjustment based on your database (e.g., `DECIMAL(10,2)` for MySQL)
+
+### Cannot Access Admin Panel
+- Verify you are logged in with an admin account (`role = 'admin'`)
+- Check that the auth system is enabled in admin settings
+- Ensure the user's `active` field is set to `1` in the database

@@ -12,6 +12,11 @@ class Model
         $this->db = new Database();
     }
 
+    public function getDb(): Database
+    {
+        return $this->db;
+    }
+
     public function all($table)
     {
         return $this->db->rows("SELECT * FROM $table");

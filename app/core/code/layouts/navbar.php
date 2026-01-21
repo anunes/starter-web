@@ -13,7 +13,13 @@ foreach (['company_logo', 'app_logo', 'logo'] as $candidate) {
     }
 }
 $logoFile = ($settings && $logoColumn) ? ($settings->{$logoColumn} ?? null) : null;
-$brandLogoSrc = $logoFile ? '/logo/' . rawurlencode($logoFile) : logo_placeholder_src();
+// Use placeholder if logo file doesn't exist in storage
+if ($logoFile) {
+    $logoPath = APP_ROOT . '/storage/logo/' . basename($logoFile);
+    $brandLogoSrc = is_file($logoPath) ? '/logo/' . rawurlencode($logoFile) : logo_placeholder_src();
+} else {
+    $brandLogoSrc = logo_placeholder_src();
+}
 
 $authEnabled = auth_enabled();
 $registrationEnabled = registration_enabled();
@@ -23,13 +29,16 @@ $showRegistrationLink = $showGuestLinks && $registrationEnabled;
 $showUserMenu = $authEnabled && $loggedIn;
 $userName = $_SESSION['name'] ?? '';
 $avatarFile = $_SESSION['avatar'] ?? null;
-$hasAvatar = !empty($avatarFile);
+$hasAvatar = false;
+$avatarSrc = '';
 
 // Add cache-busting query parameter for avatar
-if ($hasAvatar) {
+if (!empty($avatarFile)) {
     $avatarPath = APP_ROOT . '/storage/avatars/' . basename($avatarFile);
-    $cacheVersion = is_file($avatarPath) ? filemtime($avatarPath) : time();
-    $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
-} else {
-    $avatarSrc = '';
+    if (is_file($avatarPath)) {
+        $hasAvatar = true;
+        $cacheVersion = filemtime($avatarPath);
+        $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
+    }
 }
+$isAdmin = ($_SESSION['role'] ?? '') === 'admin';
