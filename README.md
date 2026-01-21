@@ -28,6 +28,17 @@ You can also run locally with PHP's built-in server:
 php -S localhost:8000 -t public
 ```
 
+## Default Admin Account
+After installation, a default admin account is pre-configured:
+- **Email:** admin@admin.net
+- **Password:** admin
+
+To set up your own admin account:
+1. Register a new user account.
+2. Log in using the default admin account (admin@admin.net / admin).
+3. Go to the admin panel and edit your newly created user account to promote them to admin.
+4. Delete the admin@admin.net account from the admin panel.
+
 ## Database notes
 - MySQL: use a user that can create databases, or pre-create the database and reuse the name.
 - SQLite: use a file path like `app/storage/database.sqlite` (the installer creates the file).
