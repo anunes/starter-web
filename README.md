@@ -53,12 +53,6 @@ chmod -R 775 app/storage/branding
 chmod -R 775 app/storage/favicon
 chmod -R 775 app/storage/logo
 ```
-
-For SQLite users, also ensure the parent directory is writable:
-```bash
-chmod 775 app/storage
-```
-
 ### Step 4: Configure Your Web Server
 
 #### Option A: Using PHP's Built-in Server (Development Only)

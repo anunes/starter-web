@@ -24,5 +24,12 @@ $showUserMenu = $authEnabled && $loggedIn;
 $userName = $_SESSION['name'] ?? '';
 $avatarFile = $_SESSION['avatar'] ?? null;
 $hasAvatar = !empty($avatarFile);
-$avatarSrc = $hasAvatar ? '/avatars/' . rawurlencode($avatarFile) : '';
-$isAdmin = ($_SESSION['role'] ?? '') === 'admin';
+
+// Add cache-busting query parameter for avatar
+if ($hasAvatar) {
+    $avatarPath = APP_ROOT . '/storage/avatars/' . basename($avatarFile);
+    $cacheVersion = is_file($avatarPath) ? filemtime($avatarPath) : time();
+    $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
+} else {
+    $avatarSrc = '';
+}
