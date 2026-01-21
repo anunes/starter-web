@@ -307,7 +307,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $pdo->exec($statement);
             }
 
-            $adminEmail = 'admin@admin.com';
+            $adminEmail = 'admin@admin.net';
             $checkStmt = $pdo->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
             $checkStmt->execute([$adminEmail]);
             if ((int) $checkStmt->fetchColumn() === 0) {
@@ -361,6 +361,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -369,12 +370,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         :root {
             color-scheme: light;
         }
+
         body {
             margin: 0;
             font-family: "Helvetica Neue", Arial, sans-serif;
             background: #f5f6f8;
             color: #1f2933;
         }
+
         .container {
             max-width: 880px;
             margin: 40px auto;
@@ -383,36 +386,44 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             border-radius: 12px;
             box-shadow: 0 12px 32px rgba(18, 38, 63, 0.08);
         }
+
         h1 {
             margin-top: 0;
             font-size: 28px;
         }
+
         h2 {
             margin-top: 28px;
             font-size: 20px;
         }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
         }
+
         label {
             display: block;
             font-weight: 600;
             margin-bottom: 6px;
         }
-        input, select {
+
+        input,
+        select {
             width: 100%;
             padding: 10px 12px;
             border: 1px solid #d5d7db;
             border-radius: 8px;
             font-size: 14px;
         }
+
         .help {
             font-size: 12px;
             color: #5b6b7c;
             margin-top: 6px;
         }
+
         .alert {
             background: #fff4e5;
             border: 1px solid #f0c36d;
@@ -421,17 +432,20 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             border-radius: 10px;
             margin-bottom: 18px;
         }
+
         .success {
             background: #e8f7ef;
             border: 1px solid #7ad4a0;
             color: #1f4f32;
         }
+
         .actions {
             margin-top: 24px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
+
         button {
             background: #1c3faa;
             color: #fff;
@@ -441,6 +455,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             font-weight: 600;
             cursor: pointer;
         }
+
         .checkbox {
             display: flex;
             align-items: center;
@@ -448,6 +463,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         }
     </style>
 </head>
+
 <body>
     <main class="container">
         <h1>Starter Web Installer</h1>
@@ -576,4 +592,5 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         <?php endif; ?>
     </main>
 </body>
+
 </html>
