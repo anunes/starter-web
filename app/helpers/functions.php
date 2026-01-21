@@ -3,9 +3,8 @@
 function view($view, $data = []): void
 {
     $GLOBALS['_view_data'] = $data;
-    echo view_partial('layouts/header', $data);
-    echo view_partial($view, $data);
-    echo view_partial('layouts/footer', $data);
+    $slot = view_partial($view, $data);
+    echo view_partial('layouts/layout', array_merge($data, ['slot' => $slot]));
     unset($GLOBALS['_view_data']);
 }
 

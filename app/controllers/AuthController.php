@@ -49,6 +49,15 @@ class AuthController extends User
 
             if (!isset($error)) {
                 $userModel = new User();
+
+                // Check if user already exists
+                $existingUser = $userModel->getUserByEmail($email);
+                if ($existingUser) {
+                    SE::setflash(t('flash.user_already_exists'), 'info');
+                    redirect('/login');
+                    exit();
+                }
+
                 $userId = $userModel->createUser($name, $email, $password);
 
                 if ($userId) {

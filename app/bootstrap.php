@@ -38,7 +38,7 @@ $auth = function () {
 };
 
 $admin = function () {
-    if (!\app\core\Session::isAdmin()) {
+    if (!\app\core\Session::loggedIn() || !\app\core\Session::isAdmin()) {
         header('Location: /');
         exit;
     }

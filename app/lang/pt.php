@@ -102,6 +102,7 @@ return [
         'passwords_no_match' => 'As palavras-passe não coincidem',
         'registration_login_failed' => 'Registo concluído, mas o login automático falhou',
         'registration_failed' => 'Registo falhou',
+        'user_already_exists' => 'Já existe uma conta com este email. Por favor, inicie sessão.',
         'invalid_login' => 'Credenciais de login inválidas',
         'user_not_found' => 'Utilizador não encontrado',
         'avatar_upload_failed' => 'Falha no envio do avatar',

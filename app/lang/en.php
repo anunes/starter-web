@@ -102,6 +102,7 @@ return [
         'passwords_no_match' => 'Passwords do not match',
         'registration_login_failed' => 'Registration succeeded, but automatic login failed',
         'registration_failed' => 'Registration failed',
+        'user_already_exists' => 'An account with this email already exists. Please log in.',
         'invalid_login' => 'Invalid login credentials',
         'user_not_found' => 'User not found',
         'avatar_upload_failed' => 'Avatar upload failed',

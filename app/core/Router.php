@@ -33,6 +33,7 @@ class Router
     public function group(array $options, callable $callback): void
     {
         $previousGroup = $this->currentGroup;
+        $previousMiddlewares = $this->middlewares;
 
         $this->currentGroup = $options;
         if (isset($options['prefix'])) {
@@ -41,7 +42,7 @@ class Router
         if (isset($options['middleware'])) {
             $middleware = (array)$options['middleware'];
             foreach ($middleware as &$m) {
-                if (is_string($m) && function_exists($m)) {
+                if (is_string($m) && isset($GLOBALS[$m])) {
                     $m = $GLOBALS[$m];
                 }
             }
@@ -51,6 +52,7 @@ class Router
         $callback($this);
 
         $this->currentGroup = $previousGroup;
+        $this->middlewares = $previousMiddlewares;
         $this->prefix = rtrim(dirname($this->prefix), '/') ?: '';
     }
 
@@ -143,7 +145,7 @@ class Router
         foreach ($middlewares as $middleware) {
             if (is_callable($middleware)) {
                 $middleware();
-            } elseif (is_string($middleware) && function_exists($middleware)) {
+            } elseif (is_string($middleware) && isset($GLOBALS[$middleware])) {
                 $middleware = $GLOBALS[$middleware];
                 $middleware();
             }

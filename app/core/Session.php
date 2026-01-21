@@ -46,7 +46,7 @@ class Session
 
     public static function isAdmin(): bool
     {
-        if (self::loggedIn() && $_SESSION['role'] == '1') {
+        if (self::loggedIn() && $_SESSION['role'] === 'admin') {
             return true;
         }
         return false;
