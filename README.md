@@ -130,7 +130,15 @@ Restart Nginx:
 sudo systemctl restart nginx
 ```
 
-### Step 5: Run the Web Installer
+### Step 5: Create a Minimal Environment File
+Before running the installer, create a basic `.env` file to prevent bootstrap errors:
+```bash
+cp env_example.text .env
+```
+
+The installer will overwrite this file with your actual configuration, but this prevents the "Unable to read environment file" error when first accessing the application.
+
+### Step 6: Run the Web Installer
 1. Open your browser and navigate to `http://your-domain.com/install.php` (or `http://localhost:8000/install.php` if using the built-in server).
 
 2. Fill in the installation form with the following information:
@@ -172,7 +180,7 @@ sudo systemctl restart nginx
 
 4. After successful installation, you'll be redirected to the login page.
 
-### Step 6: Remove the Installer
+### Step 7: Remove the Installer
 **Important:** For security, delete or rename the installer after setup:
 ```bash
 rm public/install.php
@@ -180,7 +188,7 @@ rm public/install.php
 mv public/install.php public/install.php.bak
 ```
 
-### Step 7: Access the Application
+### Step 8: Access the Application
 Visit your application URL. You can now register a new account or use the default admin account (see below).
 
 ## Manual Installation (Alternative to Web Installer)
@@ -362,6 +370,19 @@ For pages that require login, place the route inside the `auth` group in `app/ro
 - Delete `public/install.php` after setup.
 
 ## Troubleshooting
+
+### Unable to Read Environment File Error
+If you see this error:
+```
+Fatal error: Uncaught Dotenv\Exception\InvalidPathException: Unable to read any of the environment file(s) at [/path/to/.env]
+```
+
+**Solution:** The `.env` file doesn't exist. Create it before accessing the application:
+```bash
+cp env_example.text .env
+```
+
+Then access the installer at `/install.php` to configure it properly, or manually edit the `.env` file with your settings.
 
 ### Routes Return 404 Errors
 If routes like `/about` or `/login` return 404 errors:
