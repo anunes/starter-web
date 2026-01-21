@@ -11,3 +11,5 @@
       </div>
   </div>
   </div>
+  <!-- Include Delete Modal -->
+  <?= view_partial('forms/admin-delete-user') ?>

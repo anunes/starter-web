@@ -61,7 +61,12 @@ final class AdminController
                 'role' => sanitize($_POST['role'])
             ];
             if ($update->hasColumn('users', 'active')) {
-                $data['active'] = isset($_POST['active']) ? 1 : 0;
+                // If user is being promoted to admin, automatically reactivate them
+                if ($data['role'] === 'admin') {
+                    $data['active'] = 1;
+                } else {
+                    $data['active'] = isset($_POST['active']) ? 1 : 0;
+                }
             }
             $update->update('users', $data, $id);
             SE::setflash(t('flash.user_updated'), 'success');
@@ -74,12 +79,24 @@ final class AdminController
         if (!SE::checkCsrf()) {
             SE::setflash(t('flash.invalid_csrf'), 'danger');
         }
+
         $delete = new Model();
-        if ($delete->hasColumn('users', 'active')) {
-            $delete->softDelete('users', $id);
-            SE::setflash(t('flash.user_deleted'), 'success');
+
+        // Check if we should permanently delete or mark as inactive
+        $isPermanent = isset($_GET['permanent']) && $_GET['permanent'] === '1';
+
+        if ($isPermanent) {
+            // Permanently delete from database
+            $delete->delete('users', $id);
+            SE::setflash(t('flash.user_deleted_permanent'), 'success');
         } else {
-            SE::setflash(t('flash.active_unavailable'), 'warning');
+            // Mark as inactive (soft delete)
+            if ($delete->hasColumn('users', 'active')) {
+                $delete->softDelete('users', $id);
+                SE::setflash(t('flash.user_marked_inactive'), 'success');
+            } else {
+                SE::setflash(t('flash.active_unavailable'), 'warning');
+            }
         }
         redirect('/admin');
     }

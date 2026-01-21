@@ -23,7 +23,7 @@ class AuthController extends User
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Sanitize POST data   
+            // Sanitize POST data
             if (!SE::checkCsrf()) {
                 SE::setflash(t('flash.invalid_csrf'), 'danger');
             }
@@ -110,7 +110,10 @@ class AuthController extends User
                 $user = $userModel->getUserByEmail($email);
 
                 if ($user) {
-                    if (password_verify($password, $user->password)) {
+                    // Check if user is active
+                    if (isset($user->active) && $user->active == 0) {
+                        $error = t('flash.user_inactive');
+                    } elseif (password_verify($password, $user->password)) {
                         SE::setSession($user);
                         redirect('/');
                         exit();

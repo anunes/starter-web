@@ -25,7 +25,9 @@
 
     <div class=" row d-flex justify-content-between">
         <div class="col mt-3">
-            <a href="/admin/delete/<?= $user->id ?>" class="btn btn-danger"><i class="bi bi-trash-fill"></i> <?= t('admin.delete_user') ?></a>
+            <button type="button" class="btn btn-danger delete-user-trigger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" href="/admin/delete/<?= $user->id ?>">
+                <i class="bi bi-trash-fill"></i> <?= t('admin.delete_user') ?>
+            </button>
         </div>
         <div class="col mt-3 d-flex justify-content-end">
             <button type="submit" class="btn btn-primary"><i class="bi bi-floppy2-fill"></i> <?= t('common.update') ?></button>&nbsp;&nbsp;
