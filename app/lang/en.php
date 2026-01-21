@@ -147,6 +147,7 @@ return [
         'avatar_unsupported' => 'Unsupported avatar format',
         'avatar_dir_failed' => 'Unable to create avatar directory',
         'avatar_save_failed' => 'Failed to save avatar image',
+        'avatar_updated' => 'Avatar updated successfully',
         'current_password_incorrect' => 'Current password is incorrect',
         'password_updated' => 'Password updated successfully',
         'email_required' => 'Email is required',

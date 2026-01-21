@@ -147,6 +147,7 @@ return [
         'avatar_unsupported' => 'Formato de avatar não suportado',
         'avatar_dir_failed' => 'Não foi possível criar a pasta de avatars',
         'avatar_save_failed' => 'Falha ao guardar a imagem do avatar',
+        'avatar_updated' => 'Avatar atualizado com sucesso',
         'current_password_incorrect' => 'A palavra-passe atual está incorreta',
         'password_updated' => 'Palavra-passe atualizada com sucesso',
         'email_required' => 'Email é obrigatório',

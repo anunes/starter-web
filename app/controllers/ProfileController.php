@@ -45,12 +45,14 @@ class ProfileController
                     redirect('/profile');
                 }
                 $data['avatar'] = $result['filename'];
+                SE::setflash(t('flash.avatar_updated'), 'success');
             }
 
             $model->update('users', $data, $_SESSION['id']);
             $updatedUser = $model->find('users', $_SESSION['id']);
             if ($updatedUser) {
                 SE::setSession($updatedUser);
+                session_write_close();
             }
             redirect('/profile');
         }

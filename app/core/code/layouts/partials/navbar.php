@@ -31,16 +31,16 @@ $isAdmin = false;
 if ($isLoggedIn) {
     $userId = $_SESSION['id'] ?? null;
     $userName = $_SESSION['name'] ?? '';
+    $avatarFile = $_SESSION['avatar'] ?? null;
     $isAdmin = Session::isAdmin();
 
-    // Check for user avatar
-    if ($userId) {
-        $avatarDir = APP_ROOT . '/storage/avatars';
-        $avatarFiles = glob($avatarDir . '/' . $userId . '_*.webp');
-        if (!empty($avatarFiles)) {
-            $avatarPath = $avatarFiles[0];
+    // Check for user avatar from session
+    if (!empty($avatarFile)) {
+        $avatarPath = APP_ROOT . '/storage/avatars/' . basename($avatarFile);
+        if (is_file($avatarPath)) {
             $hasAvatar = true;
-            $avatarSrc = '/avatars/' . basename($avatarPath) . '?v=' . filemtime($avatarPath);
+            $cacheVersion = filemtime($avatarPath) . '-' . time();
+            $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
         }
     }
 }

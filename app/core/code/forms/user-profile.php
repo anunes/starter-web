@@ -13,3 +13,6 @@ if (!empty($avatarFile)) {
         $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
     }
 }
+
+// Set button label based on whether user has an avatar
+$avatarButtonLabel = $hasAvatar ? t('profile.change_avatar') : t('profile.add_avatar');

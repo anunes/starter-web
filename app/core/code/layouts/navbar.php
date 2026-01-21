@@ -37,7 +37,8 @@ if (!empty($avatarFile)) {
     $avatarPath = APP_ROOT . '/storage/avatars/' . basename($avatarFile);
     if (is_file($avatarPath)) {
         $hasAvatar = true;
-        $cacheVersion = filemtime($avatarPath);
+        // Use file modification time for cache-busting, add random value for forced refresh
+        $cacheVersion = filemtime($avatarPath) . '-' . time();
         $avatarSrc = '/avatars/' . rawurlencode($avatarFile) . '?v=' . $cacheVersion;
     }
 }
